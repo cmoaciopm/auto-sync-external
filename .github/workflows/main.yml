@@ -1,0 +1,13 @@
+name: Sync from External Git
+
+on:
+  schedule:
+    - cron: '0 */1 * * *'  # 每6小时执行
+
+jobs:
+  sync:
+    steps:
+      - name: Add external remote and fetch
+        run: |
+          git remote add external https://codeup.aliyun.com/6824742594317fd8828bbb48/oversea/backend.git
+          git fetch external
