@@ -2,7 +2,7 @@ name: Sync from External Git
 
 on:
   schedule:
-    - cron: '0 */1 * * *'  # 每6小时执行
+    - cron: '*/5 * * * *'  # 每5分钟执行
 
 jobs:
   sync:
