@@ -14,9 +14,5 @@ jobs:
 
       - name: Merge and push
         run: |
-          cd my_first_repo
-          git config user.name "Github Actions"
-          git config user.email "gonganmin@songmont.cn"
-          
           git remote add destination git@github.com:cmoaciopm/gitee_repo_mirror.git
           git push --mirror destination
