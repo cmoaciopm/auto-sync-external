@@ -12,7 +12,7 @@ jobs:
       - name: Add external remote and fetch
         run: |
           git init
-          git remote add external https://codeup.aliyun.com/6824742594317fd8828bbb48/oversea/backend.git
+          git remote add external https://gonganmin:${{secrets.CP_PASSWORD}}@codeup.aliyun.com/6824742594317fd8828bbb48/oversea/backend.git
           git fetch external
 
       - name: Merge and push
