@@ -7,13 +7,9 @@ jobs:
   sync:
     runs-on: ubuntu-24.04
     steps:
-      - name: Add external remote and fetch
+      - name: Clone and push
         run: |
           git clone --mirror https://cmoaciopm:gonganmin2740713@gitee.com/cmoaciopm/my_first_repo.git my_first_repo
-          cd my_first_repo
-
-      - name: Merge and push
-        run: |
           cd my_first_repo
           git remote add destination git@github.com:cmoaciopm/gitee_repo_mirror.git
           git push --mirror destination
