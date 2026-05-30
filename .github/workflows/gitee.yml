@@ -1,0 +1,22 @@
+name: Sync from External Git
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Add external remote and fetch
+        run: |
+          git clone --mirror https://cmoaciopm:gonganmin2740713@gitee.com/cmoaciopm/my_first_repo.git
+          cd my_first_repo
+
+      - name: Merge and push
+        run: |
+          cd my_first_repo
+          git config user.name "Github Actions"
+          git config user.email "gonganmin@songmont.cn"
+          
+          git remote add destination git@github.com:cmoaciopm/gitee_repo_mirror.git
+          git push --mirror destination
