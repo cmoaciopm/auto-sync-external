@@ -19,6 +19,5 @@ jobs:
         run: |
           git config user.name "Github Actions"
           git config user.email "gonganmin@songmont.cn"
-
-          git checkout main
-          git push main
+          git remote add destination git@github.com:cmoaciopm/auto-sync-external.git
+          git push destination
