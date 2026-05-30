@@ -1,4 +1,4 @@
-name: Sync from External Git
+name: Sync from Gitee to Github
 
 on:
   workflow_dispatch:
