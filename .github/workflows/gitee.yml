@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Add external remote and fetch
         run: |
-          git clone --mirror https://cmoaciopm:gonganmin2740713@gitee.com/cmoaciopm/my_first_repo.git
+          git clone --mirror https://cmoaciopm:gonganmin2740713@gitee.com/cmoaciopm/my_first_repo.git my_first_repo
           cd my_first_repo
 
       - name: Merge and push
