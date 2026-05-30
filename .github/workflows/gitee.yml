@@ -1,17 +1,68 @@
-name: Sync from Gitee to Github
+# .github/workflows/sync-from-gitee.yml
+name: Sync from Gitee to GitHub
 
 on:
-  workflow_dispatch:
+  #schedule:
+  #  - cron: '*/10 * * * *'  # 每10分钟同步
+  workflow_dispatch:  # 手动触发
 
 jobs:
   sync:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
+    
+    concurrency:
+      group: gitee-sync
+      cancel-in-progress: true
+    
+    timeout-minutes: 5
+    
     steps:
-      - name: Clone and push
+      - name: Checkout GitHub mirror repo
+        uses: actions/checkout@v4
+        with:
+          ref: master           # 明确检出 master 分支
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add Gitee upstream and sync
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITEE_USER: ${{ secrets.GITEE_USER }}
+          GITEE_PASS: ${{ secrets.GITEE_PASS }}
         run: |
-          git clone --mirror https://cmoaciopm:gonganmin2740713@gitee.com/cmoaciopm/my_first_repo.git my_first_repo
-          cd my_first_repo
-          git remote add destination git@github.com:cmoaciopm/gitee_repo_mirror.git
-          git push --mirror destination
+          # 添加 Gitee 上游（master 分支）
+          git remote add upstream https://${GITEE_USER}:${GITEE_PASS}@gitee.com/cmoaciopm/my_first_repo.git
+          
+          # 获取 Gitee 最新代码
+          git fetch upstream
+          
+          # 对比是否有更新（master 分支）
+          LOCAL=$(git rev-parse master)
+          UPSTREAM=$(git rev-parse upstream/master)
+          
+          echo "Local master:   $LOCAL"
+          echo "Upstream master: $UPSTREAM"
+          
+          if [ "$LOCAL" = "$UPSTREAM" ]; then
+            echo "Already up to date, skip sync"
+            exit 0
+          fi
+          
+          echo "New commits found, syncing..."
+
+      - name: Fast-forward mirror
+        run: |
+          # 快进同步 master 分支
+          git checkout master
+          git reset --hard upstream/master
+          
+          # 推送到 GitHub master
+          git push origin master --force
+
+      - name: Sync tags
+        run: |
+          git fetch upstream --tags
+          git push origin --tags --force
+
+      - name: Cleanup
+        if: always()
+        run: git remote remove upstream 2>/dev/null || true
