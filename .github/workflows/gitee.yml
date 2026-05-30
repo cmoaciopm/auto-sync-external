@@ -8,8 +8,10 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Clone and push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git clone --mirror https://cmoaciopm:gonganmin2740713@gitee.com/cmoaciopm/my_first_repo.git my_first_repo
           cd my_first_repo
-          git remote add destination git@github.com:cmoaciopm/gitee_repo_mirror.git
+          git remote add destination https://oauth2:${GITHUB_TOKEN}@github.com/cmoaciopm/gitee_repo_mirror.git
           git push --mirror destination
