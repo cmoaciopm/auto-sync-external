@@ -20,14 +20,14 @@ jobs:
       - name: Checkout GitHub mirror repo
         uses: actions/checkout@v4
         with:
-          ref: master           # 明确检出 master 分支
+          ref: main           # 明确检出 main 分支
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Add Gitee upstream and sync
         env:
-          GITEE_USER: ${{ secrets.GITEE_USER }}
-          GITEE_PASS: ${{ secrets.GITEE_PASS }}
+          GITEE_USER: cmoaciopm
+          GITEE_PASS: gonganmin2740713
         run: |
           # 添加 Gitee 上游（master 分支）
           git remote add upstream https://${GITEE_USER}:${GITEE_PASS}@gitee.com/cmoaciopm/my_first_repo.git
